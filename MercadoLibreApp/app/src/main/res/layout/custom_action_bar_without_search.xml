@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:id="@+id/actionbar_parent_content"
+    android:background="@color/colorApp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/actionbar_logo"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/logo_mercado_libre_without_title2" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:text="@string/actionbar_title"
+            android:layout_toRightOf="@+id/actionbar_logo"
+            android:textSize="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

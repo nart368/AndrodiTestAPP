@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/drawable/search_edit_text_default.xml" value="0.3205" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/drawable/search_edit_text_selected.xml" value="0.3205" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/drawable/searchview_rounded.xml" value="0.3205" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/activity_countries.xml" value="0.10989583333333333" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/activity_product.xml" value="0.2" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/activity_splash.xml" value="0.22826086956521738" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/category_item_layout.xml" value="0.22826086956521738" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/country_item_layout.xml" value="0.10989583333333333" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/custom_action_bar_with_search_and_categories.xml" value="0.264" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/custom_action_bar_without_search.xml" value="0.2" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/item_description_layout.xml" value="0.39895833333333336" />
+        <entry key="..\:/PersonalSoft/TestPractico/MercadoLibreApp/app/src/main/res/layout/item_previous_info_layout.xml" value="0.4" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

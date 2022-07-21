@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/actionbar_with_search_parent_content"
+    android:background="@color/colorApp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/actionbar_with_search_logo"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:layout_marginLeft="-5dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/logo_mercado_libre_without_title2" />
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/actionbar_with_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/actionbar_with_search_logo"
+            android:layout_toLeftOf="@+id/actionbar_country_selected_textview"
+            android:background="@drawable/searchview_rounded"
+            android:theme="@style/SearchViewTheme"
+            android:layout_margin="5dp"
+            app:closeIcon="@android:drawable/ic_menu_close_clear_cancel"
+            app:searchIcon="@android:drawable/ic_search_category_default"
+            />
+
+        <TextView
+            android:id="@+id/actionbar_country_selected_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:gravity="center_vertical"
+            android:text="MCO"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

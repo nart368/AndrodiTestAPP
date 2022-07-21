@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">MercadoLibreApp</string>
+    <string name="logo_content_description">Mercado Libre Logo</string>
+    <string name="actionbar_title">Seleccione su país</string>
+    <string name="category_default">Todas las categorias</string>
+    <string name="category_title">Categorias : </string>
+    <string name="result_found_title">Total de elementos encontrados : </string>
+    <string name="product_not_get_results">No hay resultados</string>
+    <string name="total_items_gettins">0</string>
+    <string name="item_title_description">Este es un producto que tiene una descripción</string>
+    <string name="item_title_price">$ 33.000</string>
+    <string name="system_is_not_connected_internet">La aplicación no esta conectada a internet, por favor revisar sus datos moviles o conexion a WiFi</string>
+    <string name="edit_text_hint">Escriba una palabra</string>
+    <!-- Error user section -->
+    <string name="current_category_not_selected">No se ha seleccionado una categoria</string>
+    <string name="current_category_not_is_instanced_valid">La instacia del categoria no es valida</string>
+    <string name="mercado_libre_api_manager_listener_not_found">No se encontro listener para notificar las información de la petición</string>
+    <string name="mercado_libre_api_manager_request_with_data_empty">La petición no trajo resultados</string>
+    <string name="mercado_libre_api_manager_request_categories_error">Se ha producido un error consultando las categorias</string>
+    <string name="mercado_libre_api_manager_request_subcategories_error">Se ha producido un error consultando las subcategorias</string>
+    <string name="mercado_libre_api_manager_request_sites_error">Se ha producido un error consultando los paises</string>
+    <string name="mercado_libre_api_manager_request_items_by_categories_error">Se ha producido un error consultando los item de la categoria</string>
+    <string name="mercado_libre_api_manager_request_items_by_custom_data_error">Se ha producido un error consultando los items</string>
+    <string name="sites_is_empty">No se pudo obtener información de paises</string>
+    <string name="categories_is_empty">No se pudo obtener información de las categorias</string>
+    <string name="item_is_empty">No se pudo obtener información del item</string>
+</resources>

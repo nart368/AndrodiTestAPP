@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:id="@+id/item_previous_content">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/item_thumbnail_previuos_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:src="@drawable/logo_plus" />
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:layout_weight="10">
+                <TextView
+                    android:id="@+id/item_title_description_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="@string/item_title_description"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/item_price_list"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="@string/item_title_price"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2sp"
+            android:background="@color/colorBlackWithShadow" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
