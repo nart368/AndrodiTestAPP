@@ -43,11 +43,11 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
 
     ProgressBar mProgressBar;
     ConstraintLayout mParentProductLayout;
-    ListView mItemListView;
+    RecyclerView mItemListView;
     Spinner mCategorySpinner;
     TextView mTotalItemOfSearch;
 
-    ItemResultAdapter mItemAdapter;
+    ItemsAdapter mItemAdapter;
 
     MercadoLibreAPIManager mApiManagerByCustomItem;
     MercadoLibreAPIManager mApiManagerByCategoryItem;
@@ -229,7 +229,9 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             mItemsByCategory = result;
             mTotalItemOfSearch.setText(" "+mItemsByCategory.getPaging().getTotal()+"");
             if(mItemsByCategory.getResults() != null && mItemsByCategory.getResults().size() > 0){
-                mItemAdapter = new ItemResultAdapter(this,mItemsByCategory.getResults(),this);
+                mItemAdapter = new ItemsAdapter(mItemsByCategory.getResults());
+                mItemListView.setHasFixedSize(true);
+                mItemListView.setLayoutManager(new LinearLayoutManager(this));
                 mItemListView.setAdapter(mItemAdapter);
             }
             else {
@@ -248,7 +250,9 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             mItemsByCustomResult = result;
             mTotalItemOfSearch.setText(" "+mItemsByCustomResult.getPaging().getTotal());
             if(mItemsByCustomResult.getResults() != null && mItemsByCustomResult.getResults().size() > 0){
-                mItemAdapter = new ItemResultAdapter(this,mItemsByCustomResult.getResults(),this);
+                mItemAdapter = new ItemsAdapter(mItemsByCustomResult.getResults());
+                mItemListView.setHasFixedSize(true);
+                mItemListView.setLayoutManager(new LinearLayoutManager(this));
                 mItemListView.setAdapter(mItemAdapter);
             }
             else {
