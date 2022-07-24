@@ -17,6 +17,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class Utils {
@@ -91,4 +93,13 @@ public class Utils {
         return connected;
     }
 
+    public static String FormatCurrency(int data){
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        return format.format(data);
+    }
+
+    public static String FormatNumberInstance(int data){
+        NumberFormat format =  NumberFormat.getNumberInstance();
+        return format.format(data);
+    }
 }

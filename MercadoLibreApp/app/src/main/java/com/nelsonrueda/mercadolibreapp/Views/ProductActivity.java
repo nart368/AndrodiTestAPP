@@ -100,6 +100,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                mCategorySpinner.setSelection(0);
                 GetCustomItem(query);
                 return true;
             }
@@ -227,7 +228,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         hideProgress();
         if(result != null){
             mItemsByCategory = result;
-            mTotalItemOfSearch.setText(" "+mItemsByCategory.getPaging().getTotal()+"");
+            mTotalItemOfSearch.setText(Utils.FormatNumberInstance(mItemsByCategory.getPaging().getTotal()));
             if(mItemsByCategory.getResults() != null && mItemsByCategory.getResults().size() > 0){
                 mItemAdapter = new ItemsAdapter(mItemsByCategory.getResults());
                 mItemListView.setHasFixedSize(true);
@@ -248,7 +249,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         hideProgress();
         if(result != null){
             mItemsByCustomResult = result;
-            mTotalItemOfSearch.setText(" "+mItemsByCustomResult.getPaging().getTotal());
+            mTotalItemOfSearch.setText(Utils.FormatNumberInstance(mItemsByCustomResult.getPaging().getTotal()));
             if(mItemsByCustomResult.getResults() != null && mItemsByCustomResult.getResults().size() > 0){
                 mItemAdapter = new ItemsAdapter(mItemsByCustomResult.getResults());
                 mItemListView.setHasFixedSize(true);

@@ -11,6 +11,7 @@
     <string name="item_title_price">$ 33.000</string>
     <string name="system_is_not_connected_internet">La aplicación no esta conectada a internet, por favor revisar sus datos moviles o conexion a WiFi</string>
     <string name="edit_text_hint">Escriba una palabra</string>
+    <string name="item_previous_content">Miniatura</string>
     <!-- Error user section -->
     <string name="current_category_not_selected">No se ha seleccionado una categoria</string>
     <string name="current_category_not_is_instanced_valid">La instacia del categoria no es valida</string>
