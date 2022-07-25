@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
+    android:orientation="vertical"
+    android:layout_height="500dp"
+    android:background="@drawable/dialog_custom"
     android:id="@+id/item_description_content">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -150,4 +151,4 @@
 
     </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

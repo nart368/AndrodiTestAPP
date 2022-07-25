@@ -13,6 +13,9 @@ import android.widget.ProgressBar;
 
 import com.nelsonrueda.mercadolibreapp.R;
 
+/**
+ * Activity para emular un splash con previa visualizalizacion de logo
+ */
 public class SplashActivity extends AppCompatActivity {
 
     final String TAG = "SplashActivity";

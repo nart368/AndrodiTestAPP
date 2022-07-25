@@ -7,6 +7,12 @@ import com.nelsonrueda.mercadolibreapp.Entities.Models.ChildrenCategory;
 import com.nelsonrueda.mercadolibreapp.Entities.Models.Site;
 import com.nelsonrueda.mercadolibreapp.R;
 
+/**
+ * Una clase que permitira persirtir en memoria mientras que la acc esta corriendo
+ * la informacion o instacia de objectos con datos, como seria el ejemplo de Site de
+ * pais seleccionado para poder complementar la informacion para la peticion a las demas
+ * API
+ */
 public class UserSettinsInMemory {
     private static Site sCurrentSite = null;
     private static Object sCurrentCategory = null;

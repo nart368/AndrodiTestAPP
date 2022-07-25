@@ -1,6 +1,10 @@
 package com.nelsonrueda.mercadolibreapp.Entities.Utils;
 
+/**
+ * Clase que contiene la constantes de las url y API a consumir por la APP
+ */
 public class Constants {
+
     public static final String BASE_URL_MERCADOLIBRE = "https://api.mercadolibre.com";
     public static final String API_GET_SITES = "/sites";
     public static final String API_GET_CATEGORIES = "/sites/$SITE_ID/categories";

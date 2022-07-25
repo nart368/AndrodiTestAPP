@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,7 +26,10 @@ import com.nelsonrueda.mercadolibreapp.R;
 
 import java.util.ArrayList;
 
-
+/**
+ * Clase para manejar las peticionas y consumir las API de MercadoLibre a traves de las
+ * libreria de Volley y retornando la respuesta por listenes previsamente pasado al manejador
+ */
 public class MercadoLibreAPIManager {
 
     final String TAG = "MercadoLibreAPIManager";
@@ -35,6 +39,10 @@ public class MercadoLibreAPIManager {
     private String currentTAG;
     private RequestQueue requestQueue;
 
+    private final int SOCKET_TIMEOUT_MS = 30000;
+    private final int DEFAULT_MAX_RETIES = 1;
+    private final int DEFAULT_BACKOFF_MULT = 1;
+    private final DefaultRetryPolicy _policyRequest = new DefaultRetryPolicy(SOCKET_TIMEOUT_MS,DEFAULT_MAX_RETIES,DEFAULT_BACKOFF_MULT);
 
     public MercadoLibreAPIManager(Context context, String TAG, IMercadoLibreListener mlListener){
         this.currentContext = context;
@@ -51,10 +59,18 @@ public class MercadoLibreAPIManager {
         this.requestQueue =  Volley.newRequestQueue(this.currentContext);
     }
 
+    /**
+     * Metodo sobrecargado para pasar el listener del tipo ICategoriesListener
+     * @param objectListener
+     */
     public void setObjectListener(ICategoriesListener objectListener){
         this.currentListener = objectListener;
     }
 
+    /**
+     * Metodo sobrecargado para pasar el listener del tipo ItemListener
+     * @param objectListener
+     */
     public void setObjectListener(IItemsListener objectListener){
         this.currentListener = objectListener;
     }
@@ -63,6 +79,11 @@ public class MercadoLibreAPIManager {
         return this.currentMercadoLibreListener;
     }
 
+    /**
+     * Metodo para realziar la peticion y obtener informacion de las categorias configuradas, se requiere como paramentro
+     * un SiteID
+     * @param SiteID
+     */
     public void GetCategories(String SiteID) {
         if(Utils.isNetworkAvailable(this.currentContext)) {
             String CATEGORIES_API_URL = String.format("%s%s", Constants.BASE_URL_MERCADOLIBRE, Constants.API_GET_CATEGORIES);
@@ -75,17 +96,22 @@ public class MercadoLibreAPIManager {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    GetMercadoLibreListener().ReportError(currentTAG, Resources.getSystem().getString(R.string.mercado_libre_api_manager_request_categories_error));
+                    GetMercadoLibreListener().ReportError(currentTAG, Utils.GetResourceString(currentContext,R.string.mercado_libre_api_manager_request_categories_error));
                     Log.e(TAG, String.format("%s - Error consultado la peticion: %s", "GetCategories", error.getMessage()));
                 }
             });
+            stringRequest.setRetryPolicy(_policyRequest);
             requestQueue.add(stringRequest);
         }else{
-            GetMercadoLibreListener().ReportError(currentTAG, Resources.getSystem().getString(R.string.system_is_not_connected_internet));
+            GetMercadoLibreListener().ReportError(currentTAG, Utils.GetResourceString(currentContext,R.string.system_is_not_connected_internet));
         }
     }
 
-
+    /**
+     * Metodo para realizar una peticion a la API y traer los item por la categoria seleccionada
+     * @param SiteID
+     * @param CategoryID
+     */
     public void GetItemByCategory(String SiteID, String CategoryID) {
         if(Utils.isNetworkAvailable(this.currentContext)) {
             String ITEMS_BY_CATEGORIES_API_URL = String.format("%s%s", Constants.BASE_URL_MERCADOLIBRE,Constants.API_GET_ITEMS_BY_CATEGORY);
@@ -99,16 +125,22 @@ public class MercadoLibreAPIManager {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    GetMercadoLibreListener().ReportError(currentTAG,Resources.getSystem().getString(R.string.mercado_libre_api_manager_request_items_by_categories_error));
+                    GetMercadoLibreListener().ReportError(currentTAG,Utils.GetResourceString(currentContext,R.string.mercado_libre_api_manager_request_items_by_categories_error));
                     Log.e(TAG,String.format("%s - Error consultado la peticion: %s","GetItemByCategory",error.getMessage()));
                 }
             });
+            stringRequest.setRetryPolicy(_policyRequest);
             requestQueue.add(stringRequest);
         }else{
-            GetMercadoLibreListener().ReportError(currentTAG, Resources.getSystem().getString(R.string.system_is_not_connected_internet));
+            GetMercadoLibreListener().ReportError(currentTAG, Utils.GetResourceString(currentContext,R.string.system_is_not_connected_internet));
         }
     }
 
+    /**
+     * Metodo para realizar una peticion a la API y traer los item por unas palabras digitada por el usuario
+     * @param SiteID
+     * @param Data
+     */
     public void GetItemByCustomResult(String SiteID, String Data) {
         if(Utils.isNetworkAvailable(this.currentContext)) {
             String CUSTOM_ITEMS_API_URL = String.format("%s%s", Constants.BASE_URL_MERCADOLIBRE,Constants.API_GET_INFO_BY_CUSTOM_SEARCH);
@@ -122,16 +154,20 @@ public class MercadoLibreAPIManager {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    GetMercadoLibreListener().ReportError(currentTAG,Resources.getSystem().getString(R.string.mercado_libre_api_manager_request_items_by_custom_data_error));
+                    GetMercadoLibreListener().ReportError(currentTAG,Utils.GetResourceString(currentContext,R.string.mercado_libre_api_manager_request_items_by_custom_data_error));
                     Log.e(TAG,String.format("%s - Error consultado la peticion: %s","GetItemByCustomResult",error.getMessage()));
                 }
             });
+            stringRequest.setRetryPolicy(_policyRequest);
             requestQueue.add(stringRequest);
         }else{
-            GetMercadoLibreListener().ReportError(currentTAG, Resources.getSystem().getString(R.string.system_is_not_connected_internet));
+            GetMercadoLibreListener().ReportError(currentTAG, Utils.GetResourceString(currentContext,R.string.system_is_not_connected_internet));
         }
     }
 
+    /**
+     * Metodo para realizar una peticion a la API y traer los Sites de cada pais
+     */
     public void GetSites() {
         if(Utils.isNetworkAvailable(this.currentContext)) {
             String SITES_API_URL = String.format("%s%s", Constants.BASE_URL_MERCADOLIBRE,Constants.API_GET_SITES);
@@ -143,16 +179,23 @@ public class MercadoLibreAPIManager {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    GetMercadoLibreListener().ReportError(currentTAG,Resources.getSystem().getString(R.string.mercado_libre_api_manager_request_sites_error));
+                    GetMercadoLibreListener().ReportError(currentTAG,Utils.GetResourceString(currentContext,R.string.mercado_libre_api_manager_request_sites_error));
                     Log.e(TAG,String.format("%s - Error consultado la peticion: %s","GetSites",error.getMessage()));
                 }
             });
+            stringRequest.setRetryPolicy(_policyRequest);
             requestQueue.add(stringRequest);
         }else{
-            GetMercadoLibreListener().ReportError(currentTAG, Resources.getSystem().getString(R.string.system_is_not_connected_internet));
+            GetMercadoLibreListener().ReportError(currentTAG, Utils.GetResourceString(currentContext,R.string.system_is_not_connected_internet));
         }
     }
 
+    /**
+     *  Metodo que recibe la data obtenida de la peticion a la API y es procesada y traformada a la estrutura de datos
+     *  correspondiente segun la peticion y es notificada por el respectivo listener a la vista
+     * @param response
+     * @param requestType
+     */
     private void ProcessData(String response,RequestType requestType) {
         if(response != null && !response.isEmpty()){
 
@@ -177,7 +220,7 @@ public class MercadoLibreAPIManager {
                     break;
             }
         }else{
-            GetMercadoLibreListener().ReportError(currentTAG, Resources.getSystem().getString(R.string.system_is_not_connected_internet));
+            GetMercadoLibreListener().ReportError(currentTAG,Utils.GetResourceString(currentContext,R.string.system_is_not_connected_internet));
         }
     }
 }

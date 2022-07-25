@@ -27,6 +27,9 @@ import com.nelsonrueda.mercadolibreapp.Views.Adapters.CountriesAdapter;
 
 import java.util.ArrayList;
 
+/**
+ * Activity para permitir al Usuario obtener y seleccionar el Site de su pais
+ */
 public class CountriesActivity  extends AppCompatActivity implements ISitesListener, IMercadoLibreListener, IAdapterListener {
 
     final String TAG = "CountriesActivity";
@@ -51,12 +54,15 @@ public class CountriesActivity  extends AppCompatActivity implements ISitesListe
         ValidaConnectionAndGetCountries();
     }
 
+    /**
+     * metodo para validar conectividad y obtener inforamcion de los sites
+     */
     private void ValidaConnectionAndGetCountries(){
         clearData();
         if(Utils.isNetworkAvailable(this)) {
             GetCountriesBySites();
         }else{
-            Toast.makeText(this,R.string.system_is_not_connected_internet,Toast.LENGTH_LONG).show();
+            Utils.ShowToast(this,Utils.GetResourceString(this,R.string.system_is_not_connected_internet));
             startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
     }
@@ -67,13 +73,18 @@ public class CountriesActivity  extends AppCompatActivity implements ISitesListe
 
     }
 
+    /**
+     * Metodo para personalizar la ActionBar
+     */
     private void customActionBar(){
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_action_bar_without_search);
-        //View view =getSupportActionBar().getCustomView();
     }
 
+    /**
+     * Metodo para inicializar los diferentes View del Layout
+     */
     private void initView(){
         mParentContriesLayout = findViewById(R.id.country_parent_layout);
         mCountriesListView = findViewById(R.id.countries_list);
@@ -85,12 +96,18 @@ public class CountriesActivity  extends AppCompatActivity implements ISitesListe
 
     }
 
+    /**
+     * Metodo realizar la peticion de los SITE
+     */
     private void GetCountriesBySites() {
-        // if(!Utils.isNetworkAvailable(this))
         showProgress();
         sendRequestGetSites();
     }
 
+    /**
+     * Metodo que inicializa un instancia de ApiManager que por medio de el se realizar la peticion para
+     * obtener los Sites
+     */
     private void sendRequestGetSites(){
         try{
             mApiManager = new MercadoLibreAPIManager(this,TAG,this,this);
@@ -109,6 +126,11 @@ public class CountriesActivity  extends AppCompatActivity implements ISitesListe
 
     }
 
+    /**
+     * Metodo que nos devuelve el evento de selecion de elemento de la lista de Site y nos
+     * permite guardar la informacion y pasar al siguitente Activity
+     * @param data
+     */
     @Override
     public void onClickItemSelect(Object data) {
         if(data != null && data.getClass() == Site.class){
@@ -120,13 +142,23 @@ public class CountriesActivity  extends AppCompatActivity implements ISitesListe
         }
     }
 
+    /**
+     * Metodo que escucha los reporte de errores que son Notificado por el APIManager
+     * @param TAG
+     * @param Message
+     */
     @Override
     public void ReportError(String TAG, String Message) {
         if(this.TAG.equals(TAG)){
-            Toast.makeText(this,Message,Toast.LENGTH_LONG).show();
+            mProgressBar.setVisibility(View.GONE);
+            Utils.ShowToast(this,Message);
         }
     }
 
+    /**
+     * Metodo que escucha y recibe la data de los Site obtenido de la peticion realizada en linea
+     * @param sites
+     */
     @Override
     public void GetSites(ArrayList<Site> sites) {
         if(mSiteList == null) mSiteList = new ArrayList<>();
@@ -137,7 +169,7 @@ public class CountriesActivity  extends AppCompatActivity implements ISitesListe
             mCountriesAdapter = new CountriesAdapter(this,mSiteList,this);
             mCountriesListView.setAdapter(mCountriesAdapter);
         }else{
-            Toast.makeText(this,R.string.sites_is_empty,Toast.LENGTH_LONG).show();
+            Utils.ShowToast(this,Utils.GetResourceString(this,R.string.sites_is_empty));
         }
         mProgressBar.setVisibility(View.GONE);
     }

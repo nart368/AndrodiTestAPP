@@ -45,6 +45,9 @@ import com.nelsonrueda.mercadolibreapp.Views.Adapters.ItemsAdapter;
 
 import java.util.ArrayList;
 
+/**
+ * Activity con la visualizacion de articulos y busqueda por categoria o una palabra especifica
+ */
 public class ProductActivity extends AppCompatActivity implements  IItemsListener, IMercadoLibreListener, IAdapterListener, ICategoriesListener {
     final private String TAG = "ProductActivity";
 
@@ -73,7 +76,6 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         setContentView(R.layout.activity_product);
         customActionBar();
         initView();
-        //ValidateConectionAndGetCategories();
     }
 
     @Override
@@ -88,7 +90,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         if(Utils.isNetworkAvailable(this)) {
             GetCategories();
         }else{
-            Toast.makeText(this,R.string.system_is_not_connected_internet,Toast.LENGTH_LONG).show();
+            Utils.ShowToast(this,Utils.GetResourceString(this,R.string.system_is_not_connected_internet));
             startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
     }
@@ -101,6 +103,10 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         IsItemsByCategory = false;
     }
 
+    /**
+     * Metodo donde se personaliza el ActionBar, dentro de este se configura
+     * la barra de Busqueda y su eventos
+     */
     private void customActionBar(){
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -108,6 +114,12 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         View view =getSupportActionBar().getCustomView();
         SearchView searchView = view.findViewById(R.id.actionbar_with_search_bar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            /**
+             * En este evento se captura la accion de submit para tomar los escrito por el usuario
+             * y consultar con la API la peticion
+             * @param query
+             * @return
+             */
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mCategorySpinner.setSelection(0);
@@ -123,6 +135,10 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         });
     }
 
+    /**
+     * Se inicializan todos los Views del Layout y tambien se declara el listener de Spinner que contienes la
+     * informacion de la categorias
+     */
     private void initView(){
         mParentProductLayout = findViewById(R.id.item_parent_container);
         mItemListView = findViewById(R.id.items_list);
@@ -136,6 +152,13 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         mCategorySpinner= findViewById(R.id.items_category);
         mTotalItemOfSearch = findViewById(R.id.total_search_found_title);
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * se captura el elementos del Spinner para identificar las categoria y enviar a realizar la peticion
+             * @param adapterView
+             * @param view
+             * @param i
+             * @param l
+             */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int
                     i, long l) {
@@ -156,6 +179,10 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         });
     }
 
+    /**
+     * Metodo para realizar peticion de la busqueda de Item por una palabra
+     * @param Data
+     */
     private void GetCustomItem(String Data) {
         // if(!Utils.isNetworkAvailable(this))
         IsItemsByCategory = false;
@@ -163,6 +190,10 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         sendRequestGetCustomItem(Data);
     }
 
+    /**
+     * Metodo para realizar peticion de la busqueda de items por una categoria
+     * @param categorySelected
+     */
     private void GetItemsByCategory(Category categorySelected) {
         // if(!Utils.isNetworkAvailable(this))
         IsItemsByCategory = true;
@@ -170,12 +201,20 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         sendRequestGetCategoryItems(categorySelected);
     }
 
+    /**
+     * Metodo para realizar peticion para obtener las categorias
+     */
     private void GetCategories() {
         // if(!Utils.isNetworkAvailable(this))
         showProgress();
         sendRequestCategories();
     }
 
+    /**
+     * Metodo que inicializa una nueva instancia del ApiManager para poder realizar una peticion de
+     * busqueda de item por una palabra especifica
+     * @param Data
+     */
     private void sendRequestGetCustomItem(String Data){
         try{
             mApiManagerByCustomItem = new MercadoLibreAPIManager(this,TAG,this);
@@ -183,6 +222,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             mApiManagerByCustomItem.GetItemByCustomResult(UserSettinsInMemory.GetCurrentSite().getId(),Data);
         }catch (Exception ex){
             Log.d(TAG, "sendRequestGetSites: ex:"+ ex.getMessage());
+            Utils.ShowToast(getApplicationContext(),Utils.GetResourceString(getApplicationContext(),R.string.request_failed));
         }
     }
 
@@ -204,16 +244,26 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
 
     }
 
+    /**
+     * Metodo que inicializa una nueva instancia del ApiManager para poder realizar una peticion de
+     * busqueda de item por una categoria
+     * @param categorySelected
+     */
     private void sendRequestGetCategoryItems(Category categorySelected){
         try{
-            mApiManagerByCategoryItem = new MercadoLibreAPIManager(this,TAG,this);
+            mApiManagerByCategoryItem = new MercadoLibreAPIManager(this,TAG, this);
             mApiManagerByCategoryItem.setObjectListener((IItemsListener) this);
             mApiManagerByCategoryItem.GetItemByCategory(UserSettinsInMemory.GetCurrentSite().getId(),categorySelected.getId());
         }catch (Exception ex){
             Log.d(TAG, "sendRequestGetSites: ex:"+ ex.getMessage());
+            Utils.ShowToast(getApplicationContext(),Utils.GetResourceString(getApplicationContext(),R.string.request_failed));
         }
     }
 
+    /**
+     * Metodo que inicializa una nueva instancia del ApiManager para poder realizar una peticion para
+     * obtener las categorias
+     */
     private void sendRequestCategories(){
         try{
             mApiManagerByCategories = new MercadoLibreAPIManager(this,TAG,this);
@@ -221,9 +271,15 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             mApiManagerByCategories.GetCategories(UserSettinsInMemory.GetCurrentSite().getId());
         }catch (Exception ex){
             Log.d(TAG, "sendRequestGetSites: ex:"+ ex.getMessage());
+            Utils.ShowToast(getApplicationContext(),Utils.GetResourceString(getApplicationContext(),R.string.request_failed));
         }
     }
 
+    /**
+     * Metodo que escucha la seleccion de una elemento de la lista y visualiza una ventanda
+     * de dialogo con su informacion
+     * @param data
+     */
     @Override
     public void onClickItemSelect(Object data) {
         if(data.getClass() == Result.class)
@@ -232,6 +288,10 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         }
     }
 
+    /**
+     * Metodo que inicializa un AlertDialo para visualizar la informacion del item seleccionado
+     * @param data
+     */
     private void ShowDialogItemInformation(Result data) {
         try{
             try{
@@ -264,7 +324,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
                 itemBuyButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(),"Producto Seleccionado",Toast.LENGTH_LONG).show();
+                        Utils.ShowToast(getApplicationContext(),Utils.GetResourceString(getApplicationContext(),R.string.item_selected));
                     }
                 });
 
@@ -290,10 +350,14 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         }
         catch (Exception ex){
             Log.e(TAG,String.format("%s - Excepcion: %s","ShowDialogItemInformation",ex.getMessage()));
-            Toast.makeText(this,R.string.item_not_load_dialog,Toast.LENGTH_LONG).show();
+            Utils.ShowToast(this,Utils.GetResourceString(this,R.string.item_not_load_dialog));
         }
     }
 
+    /**
+     * Metodo que escucha y recibe la data de obenido de la peticion de busqueda  de item por categoria
+     * @param result
+     */
     @Override
     public void GetItemByCategory(ItemsByCategoryResult result) {
         hideProgress();
@@ -311,10 +375,14 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             }
         }else{
             mItemListView.setAdapter(null);
-            Toast.makeText(this,R.string.product_not_get_results,Toast.LENGTH_LONG).show();
+            Utils.ShowToast(this,Utils.GetResourceString(this,R.string.product_not_get_results));
         }
     }
 
+    /**
+     *  Metodo que escucha y recibe la data de obenido de la peticion de busqueda  de item por una palabra especifica
+     * @param result
+     */
     @Override
     public void GetItemByCustomResult(ItemsByDataCustomResult result) {
         hideProgress();
@@ -332,17 +400,32 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             }
         }else{
             mItemListView.setAdapter(null);
-            Toast.makeText(this,R.string.product_not_get_results,Toast.LENGTH_LONG).show();
+            Utils.ShowToast(this,Utils.GetResourceString(this,R.string.product_not_get_results));
         }
     }
 
+    /**
+     *  Metodo que escucha los reporte de errores que son Notificado por el APIManager
+     * @param TAG
+     * @param Message
+     */
     @Override
     public void ReportError(String TAG, String Message) {
         if(this.TAG.equals(TAG)){
-            Toast.makeText(this,Message,Toast.LENGTH_LONG).show();
+            mProgressBar.setVisibility(View.GONE);
+            Utils.ShowToast(this,Message);
+            if(Message.equals(Utils.GetResourceString(this,R.string.system_is_not_connected_internet)))
+            {
+                Utils.ShowToast(this,Utils.GetResourceString(this,R.string.system_is_not_connected_internet));
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            }
         }
     }
 
+    /**
+     *  Metodo que escucha y recibe la data de obenida de la peticion de categoria
+     * @param categoriesResult
+     */
     @Override
     public void GetCategories(ArrayList<Category> categoriesResult) {
         if(mCategoryList == null) mCategoryList = new ArrayList<>();
@@ -361,7 +444,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             mCategorySpinner.setAdapter(categoryArrayAdapter);
 
         }else{
-            Toast.makeText(this,R.string.categories_is_empty,Toast.LENGTH_LONG).show();
+            Utils.ShowToast(this,Utils.GetResourceString(this,R.string.categories_is_empty));
         }
         mProgressBar.setVisibility(View.GONE);
     }

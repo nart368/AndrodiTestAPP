@@ -59,7 +59,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                     mListener.onClickItemSelect(itemFound);
                 }
                 else{
-                    Toast.makeText(v.getContext(), "No se pudo obtener información del item seleccionado",Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(), "No se pudo obtener información del item seleccionado",Toast.LENGTH_LONG).show();
                 }
             }
         });

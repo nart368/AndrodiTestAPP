@@ -6,8 +6,8 @@ import java.util.Date;
 public class Price {
     private String id;
     private String type;
-    private int amount;
-    private int regular_amount;
+    private float amount;
+    private float regular_amount;
     private String currency_id;
     private Date last_updated;
     private Conditions conditions;
@@ -37,19 +37,19 @@ public class Price {
         this.type = type;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
-    public int getRegular_amount() {
+    public float getRegular_amount() {
         return regular_amount;
     }
 
-    public void setRegular_amount(int regular_amount) {
+    public void setRegular_amount(float regular_amount) {
         this.regular_amount = regular_amount;
     }
 

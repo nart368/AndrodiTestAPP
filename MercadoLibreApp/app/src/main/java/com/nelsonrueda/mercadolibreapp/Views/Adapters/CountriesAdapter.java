@@ -57,7 +57,7 @@ public class CountriesAdapter extends ArrayAdapter<Site> implements View.OnClick
                     mListener.onClickItemSelect(siteModel);
                 }
                 else{
-                    Toast.makeText(mContext,"No se pudo obtener información del Pais seleccionado",Toast.LENGTH_LONG);
+                    Toast.makeText(mContext,"No se pudo obtener información del Pais seleccionado",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -75,7 +75,7 @@ public class CountriesAdapter extends ArrayAdapter<Site> implements View.OnClick
             mListener.onClickItemSelect(siteModel);
         }
         else{
-            Toast.makeText(mContext,"No se pudo obtener información del Pais seleccionado",Toast.LENGTH_LONG);
+            Toast.makeText(mContext,"No se pudo obtener información del Pais seleccionado",Toast.LENGTH_LONG).show();
         }
     }
 }

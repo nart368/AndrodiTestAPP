@@ -63,7 +63,7 @@ public class ItemResultAdapter extends ArrayAdapter<Result> implements View.OnCl
                     mListener.onClickItemSelect(itemSeletect);
                 }
                 else{
-                    Toast.makeText(mContext,"No se pudo obtener información del item seleccionado",Toast.LENGTH_LONG);
+                    Toast.makeText(mContext,"No se pudo obtener información del item seleccionado",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -82,7 +82,7 @@ public class ItemResultAdapter extends ArrayAdapter<Result> implements View.OnCl
             mListener.onClickItemSelect(itemSeletect);
         }
         else{
-            Toast.makeText(mContext,"No se pudo obtener información del item seleccionado",Toast.LENGTH_LONG);
+            Toast.makeText(mContext,"No se pudo obtener información del item seleccionado",Toast.LENGTH_LONG).show();;
         }
     }
 }
