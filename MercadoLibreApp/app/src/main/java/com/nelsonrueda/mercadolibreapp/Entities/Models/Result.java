@@ -357,4 +357,16 @@ public class Result {
     public void setCatalog_listing(boolean catalog_listing) {
         this.catalog_listing = catalog_listing;
     }
+
+    @Override
+    public String toString() {
+        return "<p><strong>Id. de Producto: </strong>"+getId()+"<br>"+
+                "<strong>Estado del producto: </strong>"+getCondition()+"<br>"+
+                "<strong>Tipo de envio: </strong>"+(getShipping().isFree_shipping()?"Gratis":"Acordado con el vendedor")+"<br>"+
+                "<strong>Cantidades vendidas: </strong>"+getSold_quantity()+"<br>"+
+                "<strong>Cantidades en stock: </strong>"+getAvailable_quantity()+"<br>"+
+                "<strong>Id del Vendedor: </strong>"+ getSeller().getId()+"<br>"+
+                "<strong>Ubicación del vendedor: </strong>"+getSeller_address().getCity().getName()+", "+getSeller_address().getState().getName()+"<br>"+
+                "</p>";
+    }
 }

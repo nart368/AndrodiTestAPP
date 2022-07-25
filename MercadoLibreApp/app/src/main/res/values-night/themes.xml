@@ -20,4 +20,11 @@
         <item name="queryHint">@string/edit_text_hint</item>
         <item name="iconifiedByDefault">false</item>
     </style>
+    <style name="buttonBuyTheme" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/color_button_buy</item>
+        <item name="colorControlHighlight">@color/colorBlackWithShadow2</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

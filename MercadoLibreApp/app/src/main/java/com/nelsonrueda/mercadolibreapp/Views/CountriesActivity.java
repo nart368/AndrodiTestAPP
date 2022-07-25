@@ -42,7 +42,7 @@ public class CountriesActivity  extends AppCompatActivity implements ISitesListe
         setContentView(R.layout.activity_countries);
         customActionBar();
         initView();
-        ValidaConnectionAndGetCountries();
+        //ValidaConnectionAndGetCountries();
     }
 
     @Override

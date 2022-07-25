@@ -7,33 +7,40 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.nelsonrueda.mercadolibreapp.Api.MercadoLibreAPIManager;
 import com.nelsonrueda.mercadolibreapp.Data.UserSettinsInMemory;
 import com.nelsonrueda.mercadolibreapp.Entities.Models.Category;
 import com.nelsonrueda.mercadolibreapp.Entities.Models.ItemsByCategoryResult;
 import com.nelsonrueda.mercadolibreapp.Entities.Models.ItemsByDataCustomResult;
+import com.nelsonrueda.mercadolibreapp.Entities.Models.Result;
 import com.nelsonrueda.mercadolibreapp.Entities.Utils.Utils;
 import com.nelsonrueda.mercadolibreapp.Interface.IAdapterListener;
 import com.nelsonrueda.mercadolibreapp.Interface.ICategoriesListener;
 import com.nelsonrueda.mercadolibreapp.Interface.IItemsListener;
 import com.nelsonrueda.mercadolibreapp.Interface.IMercadoLibreListener;
 import com.nelsonrueda.mercadolibreapp.R;
-import com.nelsonrueda.mercadolibreapp.Views.Adapters.CountriesAdapter;
-import com.nelsonrueda.mercadolibreapp.Views.Adapters.ItemResultAdapter;
 import com.nelsonrueda.mercadolibreapp.Views.Adapters.ItemsAdapter;
 
 import java.util.ArrayList;
@@ -41,22 +48,24 @@ import java.util.ArrayList;
 public class ProductActivity extends AppCompatActivity implements  IItemsListener, IMercadoLibreListener, IAdapterListener, ICategoriesListener {
     final private String TAG = "ProductActivity";
 
-    ProgressBar mProgressBar;
-    ConstraintLayout mParentProductLayout;
-    RecyclerView mItemListView;
-    Spinner mCategorySpinner;
-    TextView mTotalItemOfSearch;
+    private ProgressBar mProgressBar = null;
+    private ConstraintLayout mParentProductLayout = null;
+    private RecyclerView mItemListView = null;
+    private Spinner mCategorySpinner = null;
+    private TextView mTotalItemOfSearch = null;
 
-    ItemsAdapter mItemAdapter;
+    private AlertDialog mItemInformationDialog = null;
 
-    MercadoLibreAPIManager mApiManagerByCustomItem;
-    MercadoLibreAPIManager mApiManagerByCategoryItem;
-    MercadoLibreAPIManager mApiManagerByCategories;
+    private ItemsAdapter mItemAdapter = null;
 
-    ArrayList<Category> mCategoryList;
-    ItemsByCategoryResult mItemsByCategory;
-    ItemsByDataCustomResult mItemsByCustomResult;
-    boolean IsItemsByCategory = false;
+    private MercadoLibreAPIManager mApiManagerByCustomItem = null;
+    private MercadoLibreAPIManager mApiManagerByCategoryItem = null;
+    private MercadoLibreAPIManager mApiManagerByCategories = null;
+
+    private ArrayList<Category> mCategoryList = null;
+    private ItemsByCategoryResult mItemsByCategory = null;
+    private ItemsByDataCustomResult mItemsByCustomResult = null;
+    private boolean IsItemsByCategory = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +73,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         setContentView(R.layout.activity_product);
         customActionBar();
         initView();
-        ValidateConectionAndGetCategories();
+        //ValidateConectionAndGetCategories();
     }
 
     @Override
@@ -72,6 +81,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
         super.onResume();
         ValidateConectionAndGetCategories();
     }
+
 
     private void ValidateConectionAndGetCategories(){
         ClearData();
@@ -101,6 +111,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mCategorySpinner.setSelection(0);
+
                 GetCustomItem(query);
                 return true;
             }
@@ -132,7 +143,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
                 Category categorySelected = (Category) adapterView.getAdapter().getItem(i);
                 if(!categorySelected.getId().equals("-1")){
 
-                    sendRequestGetCategoryItems(categorySelected);
+                    GetItemsByCategory(categorySelected);
                 }else{
                     mItemListView.setAdapter(null);
                 }
@@ -215,11 +226,71 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
 
     @Override
     public void onClickItemSelect(Object data) {
-        if(data.getClass() == ItemsByCategoryResult.class)
+        if(data.getClass() == Result.class)
         {
+            ShowDialogItemInformation((Result)data);
+        }
+    }
 
-        }else if(data.getClass() == ItemsByDataCustomResult.class){
+    private void ShowDialogItemInformation(Result data) {
+        try{
+            try{
+                if(mItemInformationDialog != null && mItemInformationDialog.isShowing()){
+                    mItemInformationDialog.dismiss();
+                    mItemInformationDialog.cancel();
+                }
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this,  AlertDialog.THEME_HOLO_LIGHT);
+                LayoutInflater mInflater = LayoutInflater.from(this);
+                View mDialogView = mInflater.inflate(R.layout.item_description_layout,null);
+                ImageView miniatura = mDialogView.findViewById(R.id.item_thumbnail_detail_view);
+                TextView itemTitleView = mDialogView.findViewById(R.id.item_title_description_detail_view);
+                TextView itemPriceView  = mDialogView.findViewById(R.id.item_price_detail_view);
+                TextView itemFullDescritionView  = mDialogView.findViewById(R.id.item_full_description);
+                Button itemBuyButton = mDialogView.findViewById(R.id.item_button_buy);
+                Button itemCloseButton= mDialogView.findViewById(R.id.item_button_back);
 
+                Glide.with(mDialogView)
+                        .load(data.getThumbnail())
+                        .into(miniatura);
+                miniatura.setContentDescription(data.getThumbnail_id());
+                itemTitleView.setText(data.getTitle());
+                itemPriceView.setText(Utils.FormatCurrency(data.getPrice()));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    itemFullDescritionView.setText(Html.fromHtml(data.toString(), Html.FROM_HTML_MODE_COMPACT));
+                } else {
+                    itemFullDescritionView.setText(Html.fromHtml(data.toString()));
+                }
+
+                itemBuyButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(),"Producto Seleccionado",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                itemCloseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mItemInformationDialog.cancel();
+                    }
+                });
+
+
+                alertDialog.setView(mDialogView);
+                alertDialog.setCancelable(true);
+
+                mItemInformationDialog = alertDialog.create();
+                mItemInformationDialog.setCanceledOnTouchOutside(false);
+                mItemInformationDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                mItemInformationDialog.show();
+            }
+            catch (Exception ex){
+                Log.e(TAG,String.format("%s - Excepcion: %s","ShowDialogItemInformation",ex.getMessage()));
+            }
+        }
+        catch (Exception ex){
+            Log.e(TAG,String.format("%s - Excepcion: %s","ShowDialogItemInformation",ex.getMessage()));
+            Toast.makeText(this,R.string.item_not_load_dialog,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -230,7 +301,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             mItemsByCategory = result;
             mTotalItemOfSearch.setText(Utils.FormatNumberInstance(mItemsByCategory.getPaging().getTotal()));
             if(mItemsByCategory.getResults() != null && mItemsByCategory.getResults().size() > 0){
-                mItemAdapter = new ItemsAdapter(mItemsByCategory.getResults());
+                mItemAdapter = new ItemsAdapter(mItemsByCategory.getResults(), (IAdapterListener) this);
                 mItemListView.setHasFixedSize(true);
                 mItemListView.setLayoutManager(new LinearLayoutManager(this));
                 mItemListView.setAdapter(mItemAdapter);
@@ -251,7 +322,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
             mItemsByCustomResult = result;
             mTotalItemOfSearch.setText(Utils.FormatNumberInstance(mItemsByCustomResult.getPaging().getTotal()));
             if(mItemsByCustomResult.getResults() != null && mItemsByCustomResult.getResults().size() > 0){
-                mItemAdapter = new ItemsAdapter(mItemsByCustomResult.getResults());
+                mItemAdapter = new ItemsAdapter(mItemsByCustomResult.getResults(),(IAdapterListener) this);
                 mItemListView.setHasFixedSize(true);
                 mItemListView.setLayoutManager(new LinearLayoutManager(this));
                 mItemListView.setAdapter(mItemAdapter);
@@ -274,7 +345,7 @@ public class ProductActivity extends AppCompatActivity implements  IItemsListene
 
     @Override
     public void GetCategories(ArrayList<Category> categoriesResult) {
-        if(mCategoryList == null) mCategoryList = new ArrayList<Category>();
+        if(mCategoryList == null) mCategoryList = new ArrayList<>();
         mCategoryList.clear();
 
 

@@ -10,4 +10,5 @@
     <color name="colorApp">#FFF159</color>
     <color name="colorBlackWithShadow">#1A000000</color>
     <color name="colorBlackWithShadow2">#4A000000</color>
+    <color name="color_button_buy">#FF3483FA</color>
 </resources>

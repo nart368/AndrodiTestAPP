@@ -12,6 +12,9 @@
     <string name="system_is_not_connected_internet">La aplicación no esta conectada a internet, por favor revisar sus datos moviles o conexion a WiFi</string>
     <string name="edit_text_hint">Escriba una palabra</string>
     <string name="item_previous_content">Miniatura</string>
+    <string name="button_buy_title">Comprar ahora</string>
+    <string name="item_detail_title">Descripción del producto</string>
+    <string name="item_button_close">Cerrar</string>
     <!-- Error user section -->
     <string name="current_category_not_selected">No se ha seleccionado una categoria</string>
     <string name="current_category_not_is_instanced_valid">La instacia del categoria no es valida</string>
@@ -25,4 +28,5 @@
     <string name="sites_is_empty">No se pudo obtener información de paises</string>
     <string name="categories_is_empty">No se pudo obtener información de las categorias</string>
     <string name="item_is_empty">No se pudo obtener información del item</string>
+    <string name="item_not_load_dialog">No se pudo cargar el dialogo con la informción del item seleccionado</string>
 </resources>
